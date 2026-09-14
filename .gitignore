@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Data & model artifacts — never commit H36M data or trained weights
+data/*
+!data/.gitkeep
+!data/README.md
+*.pt
+*.pth
+*.ckpt
+
+# Experiment tracking
+wandb/
+mlruns/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
