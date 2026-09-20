@@ -1,0 +1,29 @@
+# Canonical 17-joint skeleton format shared by H36M, VideoPose3D, and the
+# MediaPipe adapter. Joint order and parent hierarchy are taken directly from
+# VideoPose3D's own h36m_skeleton definition (facebookresearch/VideoPose3D:
+# common/h36m_dataset.py's h36m_skeleton + Human36mDataset.remove_joints,
+# including its manual shoulder-reparenting fix), not hand-derived.
+unit: millimeters
+root_joint: 0
+
+joints:
+  - {id: 0, name: Hip, parent: -1}
+  - {id: 1, name: RHip, parent: 0}
+  - {id: 2, name: RKnee, parent: 1}
+  - {id: 3, name: RFoot, parent: 2}
+  - {id: 4, name: LHip, parent: 0}
+  - {id: 5, name: LKnee, parent: 4}
+  - {id: 6, name: LFoot, parent: 5}
+  - {id: 7, name: Spine, parent: 0}
+  - {id: 8, name: Thorax, parent: 7}
+  - {id: 9, name: Neck/Nose, parent: 8}
+  - {id: 10, name: Head, parent: 9}
+  - {id: 11, name: LShoulder, parent: 8}
+  - {id: 12, name: LElbow, parent: 11}
+  - {id: 13, name: LWrist, parent: 12}
+  - {id: 14, name: RShoulder, parent: 8}
+  - {id: 15, name: RElbow, parent: 14}
+  - {id: 16, name: RWrist, parent: 15}
+
+joints_left: [4, 5, 6, 11, 12, 13]
+joints_right: [1, 2, 3, 14, 15, 16]
