@@ -19,9 +19,11 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_PATH = REPO_ROOT / "configs" / "charuco_board_letter.png"
+OUTPUT_PNG_PATH = REPO_ROOT / "configs" / "charuco_board_letter.png"
+OUTPUT_PDF_PATH = REPO_ROOT / "configs" / "charuco_board_letter.pdf"
 
 DPI = 300
 PAGE_WIDTH_IN = 8.5
@@ -80,9 +82,18 @@ def main() -> None:
         cv2.putText(page_bgr, line, (x_offset, footer_y + i * 28),
                     font, 0.55, (0, 0, 0), 1, cv2.LINE_AA)
 
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    cv2.imwrite(str(OUTPUT_PATH), page_bgr)
-    print(f"Wrote {OUTPUT_PATH} ({page_w}x{page_h}px @ {DPI} DPI, "
+    OUTPUT_PNG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    cv2.imwrite(str(OUTPUT_PNG_PATH), page_bgr)
+
+    # PIL bakes the DPI into the PDF's page size (page_w/DPI x page_h/DPI
+    # inches), so a PDF viewer's "Actual Size" print option reproduces the
+    # exact physical square size - more reliably than relying on an image
+    # viewer to respect PNG DPI metadata.
+    page_rgb = cv2.cvtColor(page_bgr, cv2.COLOR_BGR2RGB)
+    Image.fromarray(page_rgb).save(OUTPUT_PDF_PATH, "PDF", resolution=DPI)
+
+    print(f"Wrote {OUTPUT_PNG_PATH} and {OUTPUT_PDF_PATH.name} "
+          f"({page_w}x{page_h}px @ {DPI} DPI, "
           f"board {SQUARES_X}x{SQUARES_Y} squares @ {SQUARE_LENGTH_MM:.0f}mm each)")
 
 
