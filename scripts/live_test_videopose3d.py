@@ -29,6 +29,7 @@ import cv2  # noqa: E402
 import numpy as np  # noqa: E402
 from ultralytics import YOLO  # noqa: E402
 
+from single_camera.coco_utils import draw_2d_skeleton  # noqa: E402
 from single_camera.inference import load_model, predict_3d_sequence  # noqa: E402
 from skeleton_adapter.adapters import from_videopose3d  # noqa: E402
 from skeleton_adapter.skeleton import SKELETON  # noqa: E402
@@ -84,21 +85,6 @@ def detect_2d_keypoints(yolo: YOLO, frames: list) -> np.ndarray:
         keypoints[i] = result.keypoints.xy[best].numpy()
         last_valid = keypoints[i]
     return keypoints
-
-
-def draw_2d_skeleton(frame, keypoints_px: np.ndarray):
-    # Standard COCO-17 skeleton connections.
-    coco_bones = [
-        (5, 7), (7, 9), (6, 8), (8, 10), (5, 6), (5, 11), (6, 12), (11, 12),
-        (11, 13), (13, 15), (12, 14), (14, 16), (0, 5), (0, 6),
-    ]
-    annotated = frame.copy()
-    points = [(int(x), int(y)) for x, y in keypoints_px]
-    for i, j in coco_bones:
-        cv2.line(annotated, points[i], points[j], (0, 165, 255), 2)
-    for x, y in points:
-        cv2.circle(annotated, (x, y), 4, (255, 120, 0), -1)
-    return annotated
 
 
 def main() -> None:
