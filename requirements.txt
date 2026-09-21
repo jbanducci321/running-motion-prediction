@@ -19,6 +19,10 @@ h5py>=3.10
 wandb>=0.16
 
 # Visualization
+# vpython 7.6.x imports the deprecated pkg_resources API at import time, which
+# recent setuptools versions have dropped entirely - pin below 81 or vpython
+# fails to import. Revisit if/when vpython ships a fixed release.
+setuptools<81
 vpython>=7.6
 matplotlib>=3.8
 
